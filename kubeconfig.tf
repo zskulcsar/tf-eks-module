@@ -30,8 +30,9 @@ users:
 KUBECONFIG
 }
 
-output "kubeconfig" {
-  value = "${local.kubeconfig}"
+resource "local_file" "kubeconfig" {
+    content     = "${local.kubeconfig}"
+    filename = "./kubeconfig-${var.cluster_name}.yaml"
 }
 
 # Worker node config for kube
@@ -56,4 +57,9 @@ CONFIGMAPAWSAUTH
 
 output "config_map_aws_auth" {
   value = "${local.config_map_aws_auth}"
+}
+
+resource "local_file" "worker_config_map" {
+    content     = "${local.config_map_aws_auth}"
+    filename = "./configmap-worker-${var.cluster_name}.yaml"
 }
