@@ -130,12 +130,13 @@ USERDATA
 resource "aws_launch_configuration" "worker" {
   associate_public_ip_address = true
   iam_instance_profile        = "${aws_iam_instance_profile.eks_worker.name}"
-  image_id                    = "${var.worker_ami[var.aws_region]}"
+  image_id                    = "${var.worker_ami["${var.aws_region}.${var.os_name}"]}"
+  # image_id                    = "ami-7183c009"
   instance_type               = "${var.worker_type}"
   name_prefix                 = "${var.cluster_name}"
-  security_groups             = ["${aws_security_group.worker_node.id}"]
+  security_groups             =["${aws_security_group.worker_node.id}", "${var.sg_bastion}"]
   user_data_base64            = "${base64encode(local.worker_userdata)}"
-  associate_public_ip_address = false
+  associate_public_ip_address = true
   key_name                    = "${var.ssh_key}"
 
   lifecycle {
@@ -149,7 +150,7 @@ resource "aws_autoscaling_group" "worker" {
   max_size             = "${length(var.cp_subnets) * var.nodes_per_subnet}"
   min_size             = "${length(var.cp_subnets)}"
   name                 = "${var.cluster_name}"
-  vpc_zone_identifier  = [ "${var.worker_subnets}" ]
+  vpc_zone_identifier  = ["${var.worker_subnets}"]
 
   tag {
     key                 = "Name"

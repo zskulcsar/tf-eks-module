@@ -1,6 +1,8 @@
 #
 variable "aws_region" {
   description = "The region where to create the VPC"
+  # US East (N. Virginia) us-east-1
+  # US West (Oregon)      us-west-2
 }
 
 # Variables where no default can be provided
@@ -23,6 +25,10 @@ variable "worker_subnets" {
 
 variable "ssh_key" {
   
+}
+
+variable "sg_bastion" {
+
 }
 
 # Variables with sensible defaults
@@ -102,11 +108,20 @@ variable "pods_per_node" {
   }
 }
 
+variable "os_name" {
+  default = "amazon"
+  description = "The name of the OS, currently 'ubuntu' and 'amazon' is supported"
+}
+
 variable "worker_ami" {
   type = "map"
 
   default = {
-    us-west-2 = "ami-73a6e20b"
-    us-east-1 = "ami-dea4d5a1"
+    # AMZN
+    us-west-2.amazon = "ami-73a6e20b"
+    us-east-1.amazon = "ami-dea4d5a1"
+    # Canonical
+    us-west-2.ubuntu = "ami-7183c009"
+    us-east-1.ubuntu = "ami-75692f0a"
   }
 }
