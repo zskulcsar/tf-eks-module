@@ -1,7 +1,18 @@
+data "aws_iam_policy_document" "eks_worker_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_iam_role" "eks_worker" {
   name               = "eks_worker-${var.cluster_name}"
   path               = "/eks/${var.cluster_name}/"
-  assume_role_policy = "${data.aws_iam_policy_document.eks_assume_role_policy.json}"
+  assume_role_policy = "${data.aws_iam_policy_document.eks_worker_assume_role_policy.json}"
 }
 
 resource "aws_iam_role_policy_attachment" "eks_worker" {
@@ -11,6 +22,11 @@ resource "aws_iam_role_policy_attachment" "eks_worker" {
 
 resource "aws_iam_role_policy_attachment" "eks_cni" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = "${aws_iam_role.eks_worker.name}"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_ecr" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = "${aws_iam_role.eks_worker.name}"
 }
 
