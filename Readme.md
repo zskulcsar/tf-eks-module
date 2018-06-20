@@ -17,3 +17,10 @@ The authentication config map is deployed onto the cluster as part of the `terra
 ### Issues
 
 * When creating the terraform cluster the subnets and the VPC will be tagged by AWS with tag `kubernetes.io/cluster/${var.cluster_name}` with value `shared`. Whe you run a `terraform apply` for the second time, this tag is removed as it is not defined in this module. Considering that the module handles only the control plane and the worker nodes the above tagging is outside of the scope of this module.
+
+#### TODO
+
+* add kube dashboard as part of deployment
+* service mesh deployment?
+* monitoring deployment?
+* rbac config?
