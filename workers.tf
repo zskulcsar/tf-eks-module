@@ -138,7 +138,7 @@ resource "aws_launch_configuration" "worker" {
   name_prefix                 = "${var.cluster_name}"
   security_groups             =["${aws_security_group.worker_node.id}", "${var.sg_bastion}"]
   user_data_base64            = "${base64encode(data.template_file.userdata.rendered)}"
-  associate_public_ip_address = true
+  associate_public_ip_address = false
   key_name                    = "${var.ssh_key}"
 
   lifecycle {
