@@ -7,8 +7,7 @@ variable "aws_region" {
 
 # Variables where no default can be provided
 variable "cluster_name" {
-  description = "The name of the cluster. Please use alphanum '-' 
-                 and '_' only as this is used as part of the name for many resources"
+  description = "The name of the cluster. Please use alphanum '-' and '_' only as this is used as part of the name for many resources"
 }
 
 variable "vpc_id" {
@@ -17,14 +16,12 @@ variable "vpc_id" {
 
 variable "cp_subnets" {
   type = "list"
-  description = "The subnets where the control plane should live. At least 2 separate subnets. 
-                 Ideally control_plane goes to a public subnet."
+  description = "The subnets where the control plane should live. At least 2 separate subnets. Ideally control_plane goes to a public subnet."
 }
 
 variable "worker_subnets" {
-  type = "list"
-  description = "The subnets where the worker nodes should live. No restrictions on the number of subnets. 
-                 Ideally the worker nodes are living in a private subnet."
+  type        = "list"
+  description = "The subnets where the worker nodes should live. No restrictions on the number of subnets. Ideally the worker nodes are living in a private subnet."
 }
 
 variable "ssh_key" {
@@ -32,30 +29,29 @@ variable "ssh_key" {
 }
 
 variable "sg_bastion" {
- description = "The security group for the bastion instance. It is assumed that the worker nodes
-                can't be accessed via ssh other than using the bastion."
+ description = "The security group for the bastion instance. It is assumed that the worker nodes can't be accessed via ssh other than using the bastion."
 }
 
 # Variables with sensible defaults
 variable "kube_version" {
   description = "The kubernetes version to be used."
-  default = "1.10"
+  default     = "1.10"
 }
 
 variable "nodes_per_subnet" {
   description = "The number of nodes per subnet"
-  default = "2"
+  default     = "2"
 }
 
 variable "worker_type" {
-  default = "t2.large"
+  default     = "t2.large"
 }
 
 variable "pods_per_node" {
   type = "map"
   description = "The number of pods a worker node can have as a maximum. Defined by AWS"
 
-  default = {
+  default     = {
     c4.large    = 29
     c4.xlarge   = 58
     c4.2xlarge  = 58
@@ -115,14 +111,14 @@ variable "pods_per_node" {
 }
 
 variable "os_name" {
-  default = "amazon"
+  default     = "amazon"
   description = "The name of the OS, currently only 'amazon' is supported."
 }
 
 variable "worker_ami" {
-  type = "map"
+  type        = "map"
 
-  default = {
+  default     = {
     # AMZN
     us-west-2.amazon = "ami-73a6e20b"
     us-east-1.amazon = "ami-dea4d5a1"
